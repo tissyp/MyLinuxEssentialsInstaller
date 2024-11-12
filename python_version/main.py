@@ -1,51 +1,61 @@
-from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QRadioButton
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
-
 import sys
 
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        # Imposta il titolo e le dimensioni della finestra
         self.setWindowTitle("My Linux Essentials Installer")
         self.setGeometry(100, 100, 300, 300)
 
-        # Creazione del layout principale
         layout = QVBoxLayout()
 
-        # Aggiunta dell'immagine
         image_label = QLabel(self)
-        pixmap = QPixmap("img/tux.png")  # Sostituisci con il percorso della tua immagine
-        if not pixmap.isNull():  # Verifica se l'immagine è stata caricata correttamente
+        pixmap = QPixmap("img/tux.png") 
+        if not pixmap.isNull():
             image_label.setPixmap(pixmap)
-            image_label.setScaledContents(True)  # Adatta l'immagine alla label
-            image_label.setFixedSize(150, 150)  # Dimensioni fisse per l'immagine
+            image_label.setScaledContents(True)
+            image_label.setFixedSize(150, 150)
         else:
-            image_label.setText("Immagine non trovata")  # Messaggio alternativo se l'immagine non si carica
+            image_label.setText("Immagine non trovata")
         
         image_label.setAlignment(Qt.AlignCenter)
 
-        # Aggiunta del testo
-        text_label = QLabel("Tissy's Customization Script")
-        text_label.setAlignment(Qt.AlignCenter)  # Centra il testo
+        title_label = QLabel("Tissy's Customization Script")
+        title_label.setAlignment(Qt.AlignCenter)
 
-        # Aggiungi i widget al layout
+        choose_label = QLabel("Scegli un'opzione:")
+
+        rb_choose0 = QRadioButton('Aggiorna Repo e Sistema', self)
+        rb_choose0.toggled.connect(self.update)
+
+        rb_choose1 = QRadioButton('Installa i pacchetti dai repo Debian', self)
+        rb_choose1.toggled.connect(self.update)
+
+        rb_choose2 = QRadioButton('Installa i pacchetti esterni')
+        rb_choose2.toggled.connect(self.update)
+
+        def update(self):
+            rb = self.sender()
+            if rb.isChecked():
+                self.result_label.setText(f'You selected {rb.text()}')
+
         layout.addWidget(image_label, alignment=Qt.AlignCenter)
-        layout.addWidget(text_label)
+        layout.addWidget(title_label)
+        layout.addWidget(choose_label)
+        layout.addWidget(rb_choose0)
+        layout.addWidget(rb_choose1)
+        layout.addWidget(rb_choose2)
 
 
-
-        # Imposta il layout della finestra
         self.setLayout(layout)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    # Creazione e visualizzazione della finestra principale
     main_window = MainWindow()
     main_window.show()
 
-    # Esecuzione dell'applicazione
     sys.exit(app.exec())
