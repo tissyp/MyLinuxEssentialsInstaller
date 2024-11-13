@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QRadioButton
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QIcon
 from PySide6.QtCore import Qt
 import sys, subprocess
 
@@ -32,6 +32,7 @@ class MainWindow(QWidget):
         super().__init__()
 
         self.setWindowTitle("My Linux Essentials Installer")
+        self.setWindowIcon(QIcon("img/linux.png"))
         self.setGeometry(100, 100, 300, 300)
 
         layout = QVBoxLayout()
