@@ -1,31 +1,7 @@
-from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QRadioButton
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QRadioButton, QHBoxLayout
 from PySide6.QtGui import QPixmap, QIcon
 from PySide6.QtCore import Qt
 import sys, subprocess
-
-class HoverLabel(QLabel):
-    def __init__(self, image_path_normal, image_path_hover, parent=None):
-        super().__init__(parent)
-
-        
-        self.image_normal = QPixmap("img/tux.png")
-        self.image_hover = QPixmap("img/computer.png")
-
-        
-        self.setPixmap(self.image_normal)
-        self.setScaledContents(True)  
-        self.setFixedSize(150, 150)  
-
-    def enterEvent(self, event):
-        
-        if not self.image_hover.isNull():
-            self.setPixmap(self.image_hover)
-
-    def leaveEvent(self, event):
-        
-        if not self.image_normal.isNull():
-            self.setPixmap(self.image_normal)
-
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -37,12 +13,15 @@ class MainWindow(QWidget):
 
         layout = QVBoxLayout()
 
-       
-        self.hover_label = HoverLabel("img/tux.png", "img/computer.png")
-        self.hover_label.setAlignment(Qt.AlignCenter)
+        logo_label = QLabel()
+        logo_pixmap = QPixmap("img/tux.png")
+        logo_label.setPixmap(logo_pixmap)
+        logo_label.setScaledContents(True)  
+        logo_label.setFixedSize(150, 150)
 
         title_label = QLabel("Tissy's Customization Script")
         title_label.setAlignment(Qt.AlignCenter)
+
 
         choose_label = QLabel("Scegli un'opzione:")
         
@@ -57,9 +36,10 @@ class MainWindow(QWidget):
         self.rb_choose2.toggled.connect(self.pass_commands)
 
         
-        layout.addWidget(self.hover_label, alignment=Qt.AlignCenter)
         layout.addWidget(title_label)
+        layout.addWidget(logo_label)
         layout.addWidget(choose_label)
+
 
         layout.addWidget(self.rb_choose0)
         layout.addWidget(self.rb_choose1)
@@ -87,7 +67,6 @@ class MainWindow(QWidget):
 
         terminal = f'xterm -title "Installing Packages..." -e "{command}; echo Premere Invio per chiudere; read"'
         subprocess.Popen(terminal, shell=True)
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
